@@ -3,29 +3,16 @@ import os
 
 import pandas as pd
 import numpy as np
+import joblib
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
+
+from starter.starter.ml.data import process_data
+from starter.starter.ml.model import train_model, compute_model_metrics, inference
 
 # Add the necessary imports for the starter code.
 
 # Add code to load in the data.
 data = pd.read_csv(os.path.join("starter", "data", "census_cleaned.csv"))
-
-
-def process_data(data, categorical_features, label, training):
-
-    num_features = [
-        "age", "education-num", "capital-gain", "capital-loss", "hours-per-week"
-    ]
-    encoder = OneHotEncoder().fit(data[categorical_features])
-    one_hot_encoded_cat_vars = encoder.transform(data[categorical_features])
-    
-    X_array = np.concatenate([one_hot_encoded_cat_vars.A, data[num_features].to_numpy()], axis=1)
-    
-    y = (data[label] == ">50K").to_numpy().reshape(-1, 1)
-    
-    return X_array, y, encoder
-
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20)
@@ -40,8 +27,23 @@ cat_features = [
     "sex",
     "native-country",
 ]
-X_train, y_train, encoder, lb = process_data(train, categorical_features=cat_features, label="salary", training=True)
+
+X_train, y_train, encoder, lb = process_data(train, cat_features, label="salary", training=True)
 
 # Proces the test data with the process_data function.
+X_test, y_test, _, _ = process_data(test, cat_features, label="salary", training=False, encoder=encoder, lb=lb)
 
 # Train and save a model.
+model = train_model(X_train, y_train)
+joblib.dump(model, os.path.join(os.pardir, os.pardir, "model", "model.joblib"))
+
+# inference pipeline
+y_pred = inference(model, X_test)
+precision, recall, fbeta = compute_model_metrics(y=y_test, preds=y_pred)
+
+
+def inference_sliced_data(data: pd.DataFrame, category: str, value: str):
+    """This function depends on global variables --> Bad practice"""
+    X = data.loc[data[category] == value, :]
+    X_test_sliced, y_test_sliced, _, _ = process_data(X, cat_features, label="salary", training=False, encoder=encoder, lb=lb)
+    return compute_model_metrics(y=y_test_sliced, preds=inference(model, X_test_sliced))
