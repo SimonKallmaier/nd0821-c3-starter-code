@@ -19,7 +19,7 @@ from ml.model import train_model, compute_model_metrics, inference
 data = pd.read_csv(os.path.join("data", "census_cleaned.csv"))
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = train_test_split(data, test_size=0.20)
+train, test = train_test_split(data, test_size=0.20, random_state=1)
 
 cat_features = [
     "workclass",
