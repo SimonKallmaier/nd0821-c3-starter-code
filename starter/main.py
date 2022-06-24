@@ -1,11 +1,19 @@
-# Put the code for your API here.
+import os
+import json
+import joblib
 
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+import pandas as pd
 
-from starter.ml.model import inference
+from starter.ml.model import inference, compute_model_metrics
+from starter.ml.data import process_data
 
 app = FastAPI()
+
+model = joblib.load(os.path.join("model", "model.joblib"))
+encoder = joblib.load(os.path.join("model", "encoder.joblib"))
+lb = joblib.load(os.path.join("model", "lb.joblib"))
 
 
 class Data(BaseModel):
@@ -13,16 +21,17 @@ class Data(BaseModel):
     workclass: str
     fnlgt: int
     education: str
-    education_num: int
-    marital_status: str
+    education_num: int = Field(alias="education-num")
+    marital_status: str = Field(alias="marital-status")
     occupation: str
     relationship: str
     race: str
     sex: str
-    capital_gain: int
-    capital_loss: int
-    hours_per_week: int
-    native_country: str
+    capital_gain: int = Field(alias="capital-gain")
+    capital_loss: int = Field(alias="capital-loss")
+    hours_per_week: int = Field(alias="hours-per-week")
+    native_country: str = Field(alias="native-country")
+    salary: str
 
 
 @app.get("/")
@@ -30,17 +39,32 @@ async def say_hello():
     return {"greeting": "Hello!"}
 
 
-
-@app.post("/model")
-async def exercise_function(path: int, query: int, body: Value):
-    return {"path": path, "query": query, "body": body}
+@app.post("/data/")
+async def upload_data(data: Data):
+    return data
 
 
 @app.post("/predict", response_model=Data, status_code=200)
 def get_prediction(payload: Data):
+    
 
+    pd_data = pd.DataFrame(payload.dict(), index=[0])
+    
 
-    prediction = inference(ticker)
+    X, y, _, _ = process_data(pd_data, encoder=encoder, lb=lb, training=False)
+    
+    print(X)
+    print(y)
 
-    response_object = {"prediction": convert(prediction_list)}
+    prediction = inference(model=model, X=X)
+    print(prediction)
+    
+    precision, recall, fbeta = compute_model_metrics(y=y, preds=prediction)
+
+    response_object = {
+        "prediction": prediction,
+        "precision": precision,
+        "recall": recall,
+        "fbeta": fbeta,
+    }
     return response_object
