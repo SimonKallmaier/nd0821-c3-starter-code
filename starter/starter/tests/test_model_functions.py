@@ -17,27 +17,28 @@ y_test = np.random.randint(2, size=test_size).ravel()
 
 
 @pytest.fixture
-def model():
+def model_fixture():
     return train_model(X_train, y_train)
 
 
 @pytest.fixture
-def inference(model):
-    return inference(model=model, X=X_test)
+def inference_fixture(model_fixture):
+    
+    return inference(model=model_fixture, X=X_test)
 
 
 @pytest.fixture
-def metrics(inference):
-    return compute_model_metrics(y=y_test, preds=inference)
+def metrics_fixture(inference_fixture):
+    return compute_model_metrics(y=y_test, preds=inference_fixture)
 
 
-def test_model(model):
-    assert isinstance(model, LogisticRegression)
+def test_model(model_fixture):
+    assert isinstance(model_fixture, LogisticRegression)
 
 
-def test_inference(inference):
-    assert isinstance(inference, np.ndarray)
+def test_inference(inference_fixture):
+    assert isinstance(inference_fixture, np.ndarray)
 
 
-def test_metrics(metrics):
-    assert isinstance(metrics, tuple)
+def test_metrics(metrics_fixture):
+    assert isinstance(metrics_fixture, tuple)
