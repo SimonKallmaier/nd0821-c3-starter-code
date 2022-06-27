@@ -41,6 +41,7 @@ data_prediction_1 = {
     "salary": ">50K",
 }
 
+
 def test_get_path():
     r = client.get("")
     assert r.status_code == 200

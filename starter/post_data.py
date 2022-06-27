@@ -1,7 +1,7 @@
 import requests
 import json
 
-data_0 = {
+data = {
     "age": 30,
     "workclass": "Private",
     "fnlgt": 77516,
