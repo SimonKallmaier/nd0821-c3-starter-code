@@ -16,7 +16,7 @@ data = {
     "capital-loss": 0,
     "hours-per-week": 40,
     "native-country": "United-States",
-    "salary": ">50K",
+    "salary": "<=50K",
 }
 
 r = requests.post("http://127.0.0.1:8000/predict/", data=json.dumps(data))

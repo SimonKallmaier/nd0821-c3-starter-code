@@ -1,0 +1,2 @@
+Number of training data: 26048
+Number of training data: 6513
