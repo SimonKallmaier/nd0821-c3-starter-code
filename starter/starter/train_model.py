@@ -3,15 +3,17 @@ import os
 import sys
 
 import pandas as pd
-import numpy as np
 import joblib
 from sklearn.model_selection import train_test_split
 
-
-sys.path.append(os.path.join(os.getcwd(), "ml"))
-print(sys.path)
-from ml.data import process_data
-from ml.model import train_model, compute_model_metrics, inference
+try:
+    from ml.data import process_data
+    from ml.model import train_model, compute_model_metrics, inference
+except ImportError:
+    sys.path.append(os.path.join(os.getcwd(), "ml"))
+    print(sys.path)
+    from ml.data import process_data
+    from ml.model import train_model, compute_model_metrics, inference
 
 # Add the necessary imports for the starter code.
 

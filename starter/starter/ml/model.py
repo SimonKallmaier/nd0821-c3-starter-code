@@ -1,13 +1,5 @@
-import sys
-import os
-
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
-
-try:
-    from starter.ml.data import process_data
-except ImportError:
-    from ml.data import process_data
 
 
 # Optional: implement hyperparameter tuning.

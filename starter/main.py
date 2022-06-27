@@ -1,13 +1,11 @@
 import os
-import json
 import joblib
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import pandas as pd
-import numpy as np
 
-from starter.ml.model import inference, compute_model_metrics
+from starter.ml.model import inference
 from starter.ml.data import process_data
 
 app = FastAPI()
