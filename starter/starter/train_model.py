@@ -23,6 +23,11 @@ data = pd.read_csv(os.path.join("data", "census_cleaned.csv"))
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20, random_state=1)
 
+with open("data_model_information/data_summary.txt", "w") as f:
+    for d in [train, test]:
+        f.write(f"Number of data: {d.shape[0]}")
+        f.write("\n")
+
 cat_features = [
     "workclass",
     "education",
@@ -49,6 +54,15 @@ joblib.dump(lb, os.path.join("model", "lb.joblib"))
 # inference pipeline
 y_pred = inference(model, X_test)
 precision, recall, fbeta = compute_model_metrics(y=y_test, preds=y_pred)
+metrics = {
+    "precision": str(precision),
+    "recall": str(recall),
+    "fbeta": str(fbeta),
+}
+with open("data_model_information/metrics.txt", "w") as f:
+    for k, v in metrics.items():
+        f.write(f"{k}: {v}")
+        f.write("\n")
 
 
 def inference_sliced_data(data: pd.DataFrame, category: str, value: str):
