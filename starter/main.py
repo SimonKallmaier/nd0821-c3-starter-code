@@ -33,9 +33,10 @@ class Data(BaseModel):
     hours_per_week: int = Field(alias="hours-per-week")
     native_country: str = Field(alias="native-country")
     salary: str
-    
+
     class Config:
         allow_population_by_field_name = True
+
 
 @app.get("/")
 async def say_hello():
@@ -49,29 +50,31 @@ async def upload_data(data: Data):
 
 @app.post("/predict/")
 def get_prediction(payload: Data):
-    
+
     pd_data = pd.DataFrame(payload.dict(), index=[0])
-    pd_data.rename(columns={
-        "age": "age",
-        "workclass": "workclass",
-        "fnlgt": "fnlgt",
-        "education": "education",
-        "education_num": "education-num",
-        "marital_status": "marital-status",
-        "occupation": "occupation",
-        "relationship": "relationship",
-        "race": "race",
-        "sex": "sex",
-        "capital_gain": "capital-gain",
-        "capital_loss": "capital-loss",
-        "hours_per_week": "hours-per-week",
-        "native_country": "native-country",
-        "salary": "salary",
-    }, inplace=True
+    pd_data.rename(
+        columns={
+            "age": "age",
+            "workclass": "workclass",
+            "fnlgt": "fnlgt",
+            "education": "education",
+            "education_num": "education-num",
+            "marital_status": "marital-status",
+            "occupation": "occupation",
+            "relationship": "relationship",
+            "race": "race",
+            "sex": "sex",
+            "capital_gain": "capital-gain",
+            "capital_loss": "capital-loss",
+            "hours_per_week": "hours-per-week",
+            "native_country": "native-country",
+            "salary": "salary",
+        },
+        inplace=True,
     )
 
     X, _, _, _ = process_data(pd_data, label="salary", encoder=encoder, lb=lb, training=False)
-    
+
     prediction = inference(model=model, X=X)
 
     return {"prediction": prediction.tolist()}

@@ -118,7 +118,9 @@ def run_sanity_check(test_dir):
         if not TEST_FOR_POST_METHOD_RESPONSE_CODE:
             print(FAIL_COLOR + f"[{WARNING_COUNT}]")
             WARNING_COUNT += 1
-            print(FAIL_COLOR + "One or more of your test cases for POST() do not seem to be testing the response code.\n")
+            print(
+                FAIL_COLOR + "One or more of your test cases for POST() do not seem to be testing the response code.\n"
+            )
         if not TEST_FOR_POST_METHOD_RESPONSE_BODY:
             print(FAIL_COLOR + f"[{WARNING_COUNT}]")
             WARNING_COUNT += 1

@@ -17,7 +17,7 @@ cat_vars = [
     "race",
     "sex",
     "native-country",
-    "salary"
+    "salary",
 ]
 
 

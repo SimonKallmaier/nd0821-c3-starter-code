@@ -14,6 +14,7 @@ def test_post():
     assert r.json()["query"] == 5
     assert r.json()["body"] == {"value": 10}
 
+
 def test_get_path():
     r = client.get("/items/42")
     assert r.status_code == 200

@@ -52,5 +52,7 @@ precision, recall, fbeta = compute_model_metrics(y=y_test, preds=y_pred)
 def inference_sliced_data(data: pd.DataFrame, category: str, value: str):
     """This function depends on global variables --> Bad practice"""
     X = data.loc[data[category] == value, :]
-    X_test_sliced, y_test_sliced, _, _ = process_data(X, cat_features, label="salary", training=False, encoder=encoder, lb=lb)
+    X_test_sliced, y_test_sliced, _, _ = process_data(
+        X, cat_features, label="salary", training=False, encoder=encoder, lb=lb
+    )
     return compute_model_metrics(y=y_test_sliced, preds=inference(model, X_test_sliced))

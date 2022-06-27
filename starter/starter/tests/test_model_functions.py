@@ -23,7 +23,7 @@ def model_fixture():
 
 @pytest.fixture
 def inference_fixture(model_fixture):
-    
+
     return inference(model=model_fixture, X=X_test)
 
 
