@@ -35,24 +35,24 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --ignore=W391,W503 --count --exit-zero --max-complexity=25 --max-line-length=127 --statistics
-    # - name: Test with pytest
-    #   run: |
-    #     pytest
+     - name: Test with pytest
+       run: |
+         python -m pytest starter/starter/tests/
 
-  deploy:
-    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-    permissions:
-      id-token: write
-      contents: read
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl public-read --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'us-east-1'
-        SOURCE_DIR: 'public'      # optional: defaults to entire repository
+#  deploy:
+#    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+#    permissions:
+#      id-token: write
+#      contents: read
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@master
+#    - uses: jakejarvis/s3-sync-action@master
+#      with:
+#        args: --acl public-read --follow-symlinks --delete
+#      env:
+#        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+#        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#        AWS_REGION: 'us-east-1'
+#        SOURCE_DIR: 'public'      # optional: defaults to entire repository
