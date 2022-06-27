@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,9 +34,9 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --ignore=W391,W503 --count --exit-zero --max-complexity=25 --max-line-length=127 --statistics
-     - name: Test with pytest
-       run: |
-         python -m pytest starter/starter/tests/
+    - name: Test with pytest
+      run: |
+        python -m pytest starter/starter/tests/
 
 #  deploy:
 #    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
