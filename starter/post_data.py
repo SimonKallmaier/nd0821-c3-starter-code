@@ -19,6 +19,6 @@ data = {
     "salary": "<=50K",
 }
 
-r = requests.post("http://127.0.0.1:8000/predict/", data=json.dumps(data))
-
+r = requests.post("https://udacity-mlops-c3.herokuapp.com/predict/", data=json.dumps(data))
+print(r.status_code)
 print(r.json())
