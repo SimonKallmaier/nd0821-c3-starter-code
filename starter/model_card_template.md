@@ -18,6 +18,10 @@ fbeta: 0.38
 
 
 ## Ethical Considerations
-None
+Ethical considerations are dependent on the use case for this model. If we want to make use of the 
+prediction on the salary regarding giving out loans or so, keep in mind that the model
+makes use of demographic and ethnic data which might be inappropriate.
+
 ## Caveats and Recommendations
-None
+One has to be careful about only using categories trained by the label encoder in the training data.
+If in doubt, have a closer look at the encoder saved in the model folder.
