@@ -5,14 +5,14 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import pandas as pd
 
-from starter.ml.model import inference
-from starter.ml.data import process_data
+from starter.starter.ml.model import inference
+from starter.starter.ml.data import process_data
 
 app = FastAPI()
 
-model = joblib.load(os.path.join("model", "model.joblib"))
-encoder = joblib.load(os.path.join("model", "encoder.joblib"))
-lb = joblib.load(os.path.join("model", "lb.joblib"))
+model = joblib.load(os.path.join("starter", "model", "model.joblib"))
+encoder = joblib.load(os.path.join("starter", "model", "encoder.joblib"))
+lb = joblib.load(os.path.join("starter", "model", "lb.joblib"))
 
 
 class Data(BaseModel):
