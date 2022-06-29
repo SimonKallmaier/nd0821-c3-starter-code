@@ -72,3 +72,17 @@ def inference_sliced_data(data: pd.DataFrame, category: str, value: str):
         X, cat_features, label="salary", training=False, encoder=encoder, lb=lb
     )
     return compute_model_metrics(y=y_test_sliced, preds=inference(model, X_test_sliced))
+
+
+precision_sliced, recall_sliced, fbeta_sliced = inference_sliced_data(test, "race", "Black")
+
+metrics = {
+    "sliced_by": "Column: 'race'; value: 'Black'",
+    "precision_sliced": str(precision_sliced),
+    "recall_sliced": str(recall_sliced),
+    "fbeta_sliced": str(fbeta_sliced),
+}
+with open("data_model_information/metrics_sliced.txt", "w") as f:
+    for k, v in metrics.items():
+        f.write(f"{k}: {v}")
+        f.write("\n")

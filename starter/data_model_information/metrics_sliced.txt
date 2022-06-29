@@ -1,0 +1,4 @@
+sliced_by: Column: 'race'; value: 'Black'
+precision_sliced: 0.5714285714285714
+recall_sliced: 0.19047619047619047
+fbeta_sliced: 0.2857142857142857
